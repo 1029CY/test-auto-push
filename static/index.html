@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐分离工具</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>音乐人声/伴奏分离</h1>
+        <p class="subtitle">上传音乐或视频文件，AI分离人声与伴奏，自由调节音量并导出</p>
+
+        <!-- Upload Area -->
+        <div id="dropZone" class="drop-zone">
+            <div class="drop-icon">🎵</div>
+            <p>拖拽音乐/视频文件到此处，或点击选择</p>
+            <input type="file" id="fileInput" accept=".mp3,.wav,.m4a,.aac,.flac,.ogg,.wma,.opus,.mp4,.mkv,.avi,.mov,.webm,.flv,.wmv" hidden>
+            <button class="btn" onclick="document.getElementById('fileInput').click()">选择文件</button>
+        </div>
+
+        <!-- Progress -->
+        <div id="progressSection" class="progress-section hidden">
+            <p id="statusText">正在分离中，请稍候...</p>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+        </div>
+
+        <!-- Player Section -->
+        <div id="playerSection" class="player-section hidden">
+            <!-- Original Video Preview (if video) -->
+            <div id="videoPreview" class="video-preview hidden">
+                <h3>🎬 原始视频</h3>
+                <video id="videoPlayer" controls></video>
+            </div>
+
+            <!-- Vocals Track -->
+            <div class="track-card">
+                <h3>🎤 人声</h3>
+                <div class="track-controls">
+                    <button class="btn btn-small" id="vocalsPlayBtn" onclick="toggleTrack('vocals')">播放</button>
+                    <input type="range" id="vocalsVolume" min="0" max="200" value="100" class="slider" oninput="updateVolume('vocals')">
+                    <span id="vocalsVolumeLabel" class="volume-label">100%</span>
+                </div>
+            </div>
+
+            <!-- Accompaniment Track -->
+            <div class="track-card">
+                <h3>🎹 伴奏</h3>
+                <div class="track-controls">
+                    <button class="btn btn-small" id="accompPlayBtn" onclick="toggleTrack('accomp')">播放</button>
+                    <input type="range" id="accompVolume" min="0" max="200" value="100" class="slider" oninput="updateVolume('accomp')">
+                    <span id="accompVolumeLabel" class="volume-label">100%</span>
+                </div>
+            </div>
+
+            <!-- Mix Controls -->
+            <div class="mix-controls">
+                <button class="btn btn-primary" id="mixPlayBtn" onclick="toggleMix()">混音预览</button>
+                <button class="btn" onclick="stopAll()">停止</button>
+                <button class="btn btn-export" id="exportBtn" onclick="exportMix()">导出音频</button>
+                <button class="btn btn-export hidden" id="exportVideoBtn" onclick="exportVideo()">导出视频</button>
+            </div>
+
+            <!-- Export Link -->
+            <div id="exportResult" class="export-result hidden">
+                <a id="exportLink" href="#" download class="btn btn-download">下载文件</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
